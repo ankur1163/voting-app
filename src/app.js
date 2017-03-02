@@ -33,7 +33,7 @@ ReactDOM.render( <Router history={browserHistory}>
     <Route path="/" component={Container} auth={auth}>
     <IndexRoute component={Home} />
       <Route path="login" component={Login} />
-      <Route path="Polldetailfull/:id" component={PollDetails}  />
+      <Route path="Polldetailfull/:id" component={PollDetails} onEnter={requireAuth} />
       <Route path="waste" component={Waste}  />
       <Route path="createPoll" component={createPoll} />
       <route path="editdamnpoll/:pollid" component={Editdamnpoll} />

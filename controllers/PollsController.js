@@ -48,7 +48,7 @@ module.exports = {
             callback(null, poll);
         });      
     },
-    //this is great,awesome
+    //this is great,awesomeand cool
     update:function(id, param,  callback,editPoll){
         console.log("this is params",param)
         editPoll  = param.editpoll || false;  
