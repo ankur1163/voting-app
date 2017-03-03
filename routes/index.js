@@ -50,6 +50,10 @@ router.get("/createpolls",function(req,res,next){
 res.render("index",null);
 
 });
+router.get("/mypolls",function(req,res,next){
+res.render("index",null);
+
+});
 
 
 

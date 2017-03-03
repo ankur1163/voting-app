@@ -82,6 +82,10 @@
 	
 	var _Container2 = _interopRequireDefault(_Container);
 	
+	var _Mypolls = __webpack_require__(848);
+	
+	var _Mypolls2 = _interopRequireDefault(_Mypolls);
+	
 	var _reactRouter = __webpack_require__(188);
 	
 	var _routes = __webpack_require__(847);
@@ -94,8 +98,9 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	//import    Polldetail from './components/layout/Polldetail.js'; // testing different Poll details
 	var routes = new _routes2.default();
+	//import    Polldetail from './components/layout/Polldetail.js'; // testing different Poll details
+	
 	
 	var mountNode = document.getElementById('root');
 	var auth = new _AuthService2.default('7SJudZnU0L7f1uFNXiH4o9P2gBgYH317', 'app1163.auth0.com');
@@ -115,9 +120,10 @@
 	    { path: '/', component: _Container2.default, auth: auth },
 	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'login', component: _Login2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'Polldetailfull/:id', component: _PollDetails2.default, onEnter: requireAuth }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'Polldetailfull/:id', component: _PollDetails2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'waste', component: _Waste2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'createPoll', component: _CreatePoll2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'mypolls', component: _Mypolls2.default, onEnter: requireAuth }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'createPoll', component: _CreatePoll2.default, onEnter: requireAuth }),
 	    _react2.default.createElement('route', { path: 'editdamnpoll/:pollid', component: _Editdamnpoll2.default })
 	  )
 	), mountNode);
@@ -21907,7 +21913,7 @@
 	                _react2.default.createElement(
 	                    'h1',
 	                    null,
-	                    'The Polling Station'
+	                    'The Polling Station is here'
 	                ),
 	                _react2.default.createElement(
 	                    'nav',
@@ -21926,7 +21932,7 @@
 	                                    null,
 	                                    _react2.default.createElement(
 	                                        'a',
-	                                        { href: '/user/login', title: 'signin' },
+	                                        { href: '/login', title: 'signin' },
 	                                        'Sign in'
 	                                    )
 	                                ),
@@ -21935,8 +21941,8 @@
 	                                    null,
 	                                    _react2.default.createElement(
 	                                        'a',
-	                                        { href: '/user/register', title: 'register' },
-	                                        'Register'
+	                                        { href: '/mypolls', title: 'My Polls' },
+	                                        'My Polls'
 	                                    )
 	                                ),
 	                                _react2.default.createElement(
@@ -49113,7 +49119,7 @@
 	    // Configure Auth0
 	    this.lock = new _auth0Lock2.default(clientId, domain, {
 	      auth: {
-	        redirectUrl: 'https://voting-app-bizzel.c9users.io/login',
+	        redirectUrl: 'https://voting-app-final-restlessankur.c9users.io/login',
 	        responseType: 'token'
 	      }
 	    });
@@ -49126,10 +49132,20 @@
 	  _createClass(AuthService, [{
 	    key: '_doAuthentication',
 	    value: function _doAuthentication(authResult) {
+	      var _this = this;
+	
 	      // Saves the user token
 	      this.setToken(authResult.idToken);
 	      // navigate to the home route
-	      _reactRouter.browserHistory.replace('/home');
+	      _reactRouter.browserHistory.replace('/createPoll');
+	
+	      this.lock.getProfile(authResult.idToken, function (error, profile) {
+	        if (error) {
+	          console.log('Error loading the Profile', error);
+	        } else {
+	          _this.setProfile(profile);
+	        }
+	      });
 	    }
 	  }, {
 	    key: 'login',
@@ -49154,6 +49170,21 @@
 	    value: function getToken() {
 	      // Retrieves the user token from local storage
 	      return localStorage.getItem('id_token');
+	    }
+	  }, {
+	    key: 'setProfile',
+	    value: function setProfile(profile) {
+	      // Saves profile data to local storage
+	      localStorage.setItem('profile', JSON.stringify(profile));
+	      // Triggers profile_updated event to update the UI
+	      this.emit('profile_updated', profile);
+	    }
+	  }, {
+	    key: 'getProfile',
+	    value: function getProfile() {
+	      // Retrieves the profile data from local storage
+	      var profile = localStorage.getItem('profile');
+	      return profile ? JSON.parse(localStorage.profile) : {};
 	    }
 	  }, {
 	    key: 'logout',
@@ -77806,7 +77837,8 @@
 	
 	        _this.state = {
 	            currentVoteResponse: '',
-	            currentPollId: _this.props.pollId
+	            currentPollId: _this.props.pollId,
+	            originalauthor: false
 	        };
 	        return _this;
 	    }
@@ -77935,6 +77967,50 @@
 	            });
 	        }
 	    }, {
+	        key: 'realuser',
+	        value: function realuser() {
+	            var _this4 = this;
+	
+	            var username;
+	            var username2;
+	            if (localStorage.getItem("profile")) {
+	                console.log("full profile real user", localStorage.getItem("profile"));
+	                var obj = localStorage.getItem("profile");
+	                console.log("parsed value realuser", JSON.parse(obj));
+	                var parobj = JSON.parse(obj);
+	                username = parobj.email;
+	                console.log("email is realuser", username);
+	                username2 = this.state.list.author;
+	                if (username === username2) {
+	                    console.log("its matched");
+	                    return _react2.default.createElement(
+	                        'div',
+	                        null,
+	                        _react2.default.createElement(
+	                            'button',
+	                            { onClick: function onClick() {
+	                                    return _this4.deletefunc();
+	                                }, type: 'button' },
+	                            'Delete'
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            null,
+	                            _react2.default.createElement(
+	                                _reactRouter.Link,
+	                                { to: '/editdamnpoll/' + pollidagain },
+	                                'Edit the damn  Poll '
+	                            ),
+	                            ' '
+	                        ),
+	                        _react2.default.createElement('br', null)
+	                    );
+	                } else {}
+	            } else {
+	                console.log("no match");
+	            }
+	        }
+	    }, {
 	        key: 'deletefunc',
 	        value: function deletefunc() {
 	            console.log("deletefunc this", this);
@@ -77955,7 +78031,7 @@
 	    }, {
 	        key: 'handleNewVote',
 	        value: function handleNewVote(e) {
-	            var _this4 = this;
+	            var _this5 = this;
 	
 	            e.preventDefault();
 	            //set something in storage to check on what polls user already voted.
@@ -77999,7 +78075,7 @@
 	                    return rv.votes;
 	                });
 	                chartValues.datasets[0].data = votesSoFar;
-	                _this4.setState({
+	                _this5.setState({
 	                    data: chartValues,
 	                    list: updatedList
 	                });
@@ -78008,8 +78084,6 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this5 = this;
-	
 	            var responseList = this.state.list.responses.map(function (item, index) {
 	                return _react2.default.createElement(RadioRows, { key: index,
 	                    pollId: this.state.list._id, resp: item.response, votes: item.votes });
@@ -78041,40 +78115,18 @@
 	                            _react2.default.createElement('br', null),
 	                            _react2.default.createElement('input', { type: 'submit', name: 'submitBtn', value: 'Cast your vote' })
 	                        ),
+	                        this.realuser(),
 	                        _react2.default.createElement(
-	                            'button',
-	                            { onClick: function onClick() {
-	                                    return _this5.deletefunc();
-	                                }, type: 'button' },
-	                            'Delete'
-	                        ),
-	                        _react2.default.createElement(
-	                            'button',
+	                            'p',
 	                            null,
-	                            _react2.default.createElement(
-	                                _reactRouter.Link,
-	                                { to: '/editdamnpoll/' + pollidagain },
-	                                'Edit the damn  Poll '
-	                            ),
-	                            ' '
+	                            'Created by :',
+	                            this.state.list.author
 	                        )
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'col-md-6' },
 	                        _react2.default.createElement(_reactChartjs.Doughnut, { data: this.state.data })
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'row' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-*' },
-	                        _react2.default.createElement(_EditPoll2.default, { visible: this.state.editVisible,
-	                            question: this.state.list.pollquestion,
-	                            author: this.state.list.author,
-	                            someResponses: this.state.list.responses })
 	                    )
 	                )
 	            );
@@ -109887,6 +109939,8 @@
 	
 	var _ApiManager2 = _interopRequireDefault(_ApiManager);
 	
+	var _reactRouter = __webpack_require__(188);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -109909,13 +109963,28 @@
 	            poll: {
 	                pollquestion: '',
 	                author: '',
-	                responses: []
+	                responses: [],
+	                loggedin: false
+	
 	            }
 	        };
 	        return _this;
 	    }
 	
 	    _createClass(CreatePoll, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            if (localStorage.getItem("profile")) {
+	                console.log("full profile", localStorage.getItem("profile"));
+	                var obj = localStorage.getItem("profile");
+	                console.log("component will mount parsed value", JSON.parse(obj));
+	                var parobj = JSON.parse(obj);
+	                var username = parobj.email;
+	                console.log("componentwill mount email is", username);
+	                this.setState({ author: username, loggedin: true });
+	            } else {}
+	        }
+	    }, {
 	        key: 'updatePoll',
 	        value: function updatePoll(event) {
 	
@@ -109932,11 +110001,22 @@
 	    }, {
 	        key: 'submitPoll',
 	        value: function submitPoll(event) {
+	            var username;
+	            if (localStorage.getItem("profile")) {
+	                console.log("full profile", localStorage.getItem("profile"));
+	                var obj = localStorage.getItem("profile");
+	                console.log("parsed value", JSON.parse(obj));
+	                var parobj = JSON.parse(obj);
+	                username = parobj.email;
+	                console.log("email is", username);
+	                this.setState({ author: username, loggedin: true });
+	            } else {}
 	
 	            // call the function from the container (not here as this is presentation layer)
 	            //this.props.onCreate(this.state.poll);fg
 	
 	            var pollObject = Object.assign({}, this.state.poll);
+	            pollObject.author = username;
 	            console.log("state copied", pollObject);
 	            // var arr1 =this.state.poll.responses.split(","); // don't do this here
 	            // var arr2=[];
@@ -109961,6 +110041,49 @@
 	            return _react2.default.createElement(
 	                'div',
 	                null,
+	                _react2.default.createElement(
+	                    'nav',
+	                    { role: 'navigation' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'container-fluid' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'navbar-header' },
+	                            _react2.default.createElement(
+	                                'ul',
+	                                { className: 'nav navbar-nav navbar-right' },
+	                                _react2.default.createElement(
+	                                    'li',
+	                                    null,
+	                                    _react2.default.createElement(
+	                                        'a',
+	                                        { href: '/login', title: 'signin' },
+	                                        'Sign in'
+	                                    )
+	                                ),
+	                                _react2.default.createElement(
+	                                    'li',
+	                                    null,
+	                                    _react2.default.createElement(
+	                                        'a',
+	                                        { href: '/mypolls', title: 'My Polls' },
+	                                        'My Polls'
+	                                    )
+	                                ),
+	                                _react2.default.createElement(
+	                                    'li',
+	                                    null,
+	                                    _react2.default.createElement(
+	                                        _reactRouter.Link,
+	                                        { to: '/createPoll' },
+	                                        'Create Poll'
+	                                    )
+	                                )
+	                            )
+	                        )
+	                    )
+	                ),
 	                'Add a new poll:',
 	                _react2.default.createElement('br', null),
 	                _react2.default.createElement('input', { onChange: this.updatePoll.bind(this), id: 'pollquestion', className: 'form-control', type: 'text', placeholder: 'Poll question', value: this.state.poll.pollquestion }),
@@ -110141,6 +110264,96 @@
 	}(_react2.default.Component);
 	
 	exports.default = makeMainRoutes;
+
+/***/ },
+/* 848 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _ApiManager = __webpack_require__(244);
+	
+	var _ApiManager2 = _interopRequireDefault(_ApiManager);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Mypolls = function (_Component) {
+	    _inherits(Mypolls, _Component);
+	
+	    function Mypolls() {
+	        _classCallCheck(this, Mypolls);
+	
+	        var _this = _possibleConstructorReturn(this, (Mypolls.__proto__ || Object.getPrototypeOf(Mypolls)).call(this));
+	
+	        _this.state = {
+	            list: []
+	        };
+	        return _this;
+	    }
+	
+	    _createClass(Mypolls, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            var _this2 = this;
+	
+	            var username;
+	            console.log("full profile real user", localStorage.getItem("profile"));
+	            var obj = localStorage.getItem("profile");
+	            console.log("parsed value realuser", JSON.parse(obj));
+	            var parobj = JSON.parse(obj);
+	            username = parobj.email;
+	
+	            _ApiManager2.default.get('/api/polls/' + username, null, function (err, response) {
+	                if (err) {
+	                    alert("Error: " + err);
+	                    return;
+	                }
+	
+	                console.log('RESULTS: ' + JSON.stringify(response.message));
+	
+	                _this2.setState({
+	                    list: response.message
+	                });
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	
+	            //const zoneStyle = styles.zone; // needs to be inside the render func!
+	
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'h2',
+	                    null,
+	                    ' My Polls  page is here '
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return Mypolls;
+	}(_react.Component);
+	
+	exports.default = Mypolls;
 
 /***/ }
 /******/ ]);

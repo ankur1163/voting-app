@@ -31,6 +31,38 @@ router.get("/:resource", function(req, res, next){
   
 });
 
+///api/polls/'+username
+router.get("/:resource/:username", function(req, res, next){
+    console.log('fetch specific username polls' + controllers[resourceFrom]);
+    var resourceFrom = req.params.resource;
+    var controller = controllers[resourceFrom];
+    var username = req.params.username;
+    console.log("username in api.js specific user",username)
+    
+    if (controller == null) {
+        res.json({ confirmation: 'fail',
+                    message: 'User made invalid resource request'
+        });
+        return;
+    }
+    
+    // call the correct controller specified by the http request
+    controller.find(username, function(err, results){
+        if (err){
+                res.json({ confirmation: 'fail',
+                    message: err
+                });
+                return;
+            }
+            res.json({ confirmation: 'success',
+                    message: results
+        });
+    });
+
+  
+});
+
+//end
 router.get("/:resource/:id", function(req, res, next){
     var resource = req.params.resource;
 

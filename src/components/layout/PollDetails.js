@@ -14,7 +14,8 @@ class RadioRows extends Component {
         super(props);
         this.state = {
             currentVoteResponse: '',
-            currentPollId: this.props.pollId
+            currentPollId: this.props.pollId,
+            originalauthor:false
         }
     }   
    
@@ -80,6 +81,7 @@ class PollDetails extends Component {
         this.handleNewVote = this.handleNewVote.bind(this);
     }
     componentDidMount(){
+        
         console.log('componentDidMount (Polldetail): ' + this.props.location.pathname);
         var urlWithId =this.props.location.pathname;
         
@@ -137,6 +139,40 @@ class PollDetails extends Component {
         
 
     }
+    realuser(){
+        var username;
+        var username2;
+        if(localStorage.getItem("profile")){
+            console.log("full profile real user",localStorage.getItem("profile"))
+        var obj = localStorage.getItem("profile")
+        console.log("parsed value realuser",JSON.parse(obj))
+        var parobj = JSON.parse(obj);
+        username = parobj.email;
+        console.log("email is realuser",username)
+        username2 = this.state.list.author;
+        if(username===username2){
+            console.log("its matched")
+            return (
+                <div>
+                
+                <button onClick={() => this.deletefunc()} type="button">Delete</button>
+                                    <button><Link to={`/editdamnpoll/${pollidagain}`}>Edit the damn  Poll </Link> </button><br />
+                </div>
+                )
+        }
+        else{
+            
+        }
+            
+        }
+        
+        
+        else{
+            console.log("no match")
+            
+        }
+    }
+    
     deletefunc(){
         console.log("deletefunc this",this)
         console.log('deletefunc pathname: ' + this.props.location.pathname);
@@ -230,21 +266,15 @@ class PollDetails extends Component {
                                     <br/>
                                     <input type="submit" name="submitBtn"  value="Cast your vote"/>
                                     </form>
-                                    <button onClick={() => this.deletefunc()} type="button">Delete</button>
-                                    <button><Link to={`/editdamnpoll/${pollidagain}`}>Edit the damn  Poll </Link> </button>
+                                  {this.realuser()}
+                                    
+                                    <p>Created by :{this.state.list.author}</p>
                         </div>
                         <div className="col-md-6">
                             <Doughnut data={this.state.data} />
                         </div>
                     </div>
-                    <div className="row">
-                        <div className="col-md-*">
-                            <EditPoll visible={this.state.editVisible} 
-                                question={this.state.list.pollquestion} 
-                                author={this.state.list.author}
-                                someResponses={this.state.list.responses} />
-                        </div>
-                    </div>
+                    
                 
                 </div>);
     }

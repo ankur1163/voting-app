@@ -9,13 +9,14 @@ class Home extends Component {
     render() {
         return (
             <div className="container">
-            <h1>The Polling Station</h1>
+            <h1>The Polling Station is here</h1>
             <nav role="navigation">
              <div className="container-fluid">
                 <div className="navbar-header">
                     <ul className="nav navbar-nav navbar-right">
-                      <li><a href="/user/login" title="signin">Sign in</a></li>
-                      <li><a href="/user/register" title="register">Register</a></li>
+                      <li><a href="/login" title="signin">Sign in</a></li>
+                      <li><a href="/mypolls" title="My Polls">My Polls</a></li>
+                      
                       <li><Link to="createPoll">Create Poll</Link></li>
                    
                     </ul>

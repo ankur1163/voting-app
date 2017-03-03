@@ -18,7 +18,7 @@ var LocalStragegy = require('passport-local').Stragegy;  // new
 // your application's code
 var bodyParser = require('body-parser');
 var mongoose =require("mongoose");
-var dbUrl = 'mongodb://asjb:326382l@ds053718.mlab.com:53718/fcc-polls';
+var dbUrl = "mongodb://ankur1163:lightbulb1@ds013946.mlab.com:13946/ank1163";
 
 mongoose.connect(dbUrl, function(err, res){
   if (err){
