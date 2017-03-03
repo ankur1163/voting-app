@@ -78084,6 +78084,7 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            console.log("state", this.state);
 	            var responseList = this.state.list.responses.map(function (item, index) {
 	                return _react2.default.createElement(RadioRows, { key: index,
 	                    pollId: this.state.list._id, resp: item.response, votes: item.votes });
