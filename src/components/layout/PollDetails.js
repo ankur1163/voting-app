@@ -174,6 +174,20 @@ class PollDetails extends Component {
         }
     }
     
+    fullurl(){
+        var url = window.location.href;
+        if(localStorage.getItem("profile")){
+            return(
+                <div>
+                {url}
+                
+                </div>
+                )
+        }
+        
+        
+    }
+    
     deletefunc(){
         console.log("deletefunc this",this)
         console.log('deletefunc pathname: ' + this.props.location.pathname);
@@ -281,7 +295,9 @@ class PollDetails extends Component {
                                     </form>
                                   {this.realuser()}
                                     
-                                    <p>Created by :{this.state.list.author}</p>
+                                    <p>Created by :{this.state.list.author}</p><br />
+                                    <p>You can share this poll with your friend. Just copy  this url and send to your friends</p><br />
+                                    {this.fullurl()}
                         </div>
                         <div className="col-md-6">
                             <Doughnut data={this.state.data} />

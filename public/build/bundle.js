@@ -78012,6 +78012,18 @@
 	            }
 	        }
 	    }, {
+	        key: 'fullurl',
+	        value: function fullurl() {
+	            var url = window.location.href;
+	            if (localStorage.getItem("profile")) {
+	                return _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    url
+	                );
+	            }
+	        }
+	    }, {
 	        key: 'deletefunc',
 	        value: function deletefunc() {
 	            console.log("deletefunc this", this);
@@ -78133,7 +78145,15 @@
 	                            null,
 	                            'Created by :',
 	                            this.state.list.author
-	                        )
+	                        ),
+	                        _react2.default.createElement('br', null),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'You can share this poll with your friend. Just share this url'
+	                        ),
+	                        _react2.default.createElement('br', null),
+	                        this.fullurl()
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
@@ -110308,6 +110328,8 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	//final
 	
 	var Mypolls = function (_Component) {
 	  _inherits(Mypolls, _Component);
