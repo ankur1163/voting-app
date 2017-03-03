@@ -49119,7 +49119,7 @@
 	    // Configure Auth0
 	    this.lock = new _auth0Lock2.default(clientId, domain, {
 	      auth: {
-	        redirectUrl: 'https://voting-app-final-restlessankur.c9users.io/login',
+	        redirectUrl: 'https://floating-gorge-91160.herokuapp.com/login',
 	        responseType: 'token'
 	      }
 	    });
