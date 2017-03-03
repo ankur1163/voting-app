@@ -77889,7 +77889,7 @@
 	            selected: -1,
 	            editVisible: true,
 	            list: {
-	                responses: []
+	                responses: [{ "responses": [] }]
 	            },
 	            data: {
 	                labels: ['Red', 'Green', 'Yellow'],
@@ -77906,8 +77906,8 @@
 	    }
 	
 	    _createClass(PollDetails, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
 	            var _this3 = this;
 	
 	            console.log('componentDidMount (Polldetail): ' + this.props.location.pathname);
@@ -77922,7 +77922,8 @@
 	                }
 	
 	                console.log('This particular polldetail RESULTS: ' + JSON.stringify(response.message));
-	
+	                var tarr = _this3.state.list;
+	                tarr.responses = response.message;
 	                _this3.setState({
 	                    list: response.message
 	                });
@@ -78084,11 +78085,21 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            console.log("state", this.state);
-	            var responseList = this.state.list.responses.map(function (item, index) {
-	                return _react2.default.createElement(RadioRows, { key: index,
-	                    pollId: this.state.list._id, resp: item.response, votes: item.votes });
-	            }.bind(this));
+	            console.log("this.state.list.response", this.state.list.responses);
+	
+	            console.log("this.state.list.responses[0]", this.state.list.responses[0]);
+	            console.log("this.state.list.responses[0].responses", this.state.list.responses[0].responses);
+	            var index = this.state.list;
+	            var responseList = [];
+	            if (true) {
+	                responseList = this.state.list.responses.map(function (item, index) {
+	                    console.log("this.state.list._id", this.state.list._id);
+	                    console.log("item.response", item.response);
+	                    console.log("item.votes", item.votes);
+	                    return _react2.default.createElement(RadioRows, { key: index,
+	                        pollId: this.state.list._id, resp: item.response, votes: item.votes });
+	                }.bind(this));
+	            }
 	
 	            return _react2.default.createElement(
 	                'div',

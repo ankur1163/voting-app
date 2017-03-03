@@ -47,13 +47,14 @@ router.get("/:resource/:username", function(req, res, next){
     }
     
     // call the correct controller specified by the http request
-    controller.find(username, function(err, results){
+    controller.findById(username, function(err, results){
         if (err){
                 res.json({ confirmation: 'fail',
                     message: err
                 });
                 return;
             }
+            console.log("results inside",results)
             res.json({ confirmation: 'success',
                     message: results
         });
@@ -64,6 +65,7 @@ router.get("/:resource/:username", function(req, res, next){
 
 //end
 router.get("/:resource/:id", function(req, res, next){
+    
     var resource = req.params.resource;
 
     var id = req.params.id;

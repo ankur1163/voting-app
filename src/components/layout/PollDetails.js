@@ -54,7 +54,7 @@ class PollDetails extends Component {
             selected: -1,
             editVisible: true,
             list: {
-                    responses: []
+                    responses: [{"responses":[]}]
                    },
             data: {
                 labels: [
@@ -80,7 +80,7 @@ class PollDetails extends Component {
 
         this.handleNewVote = this.handleNewVote.bind(this);
     }
-    componentDidMount(){
+    componentWillMount(){
         
         console.log('componentDidMount (Polldetail): ' + this.props.location.pathname);
         var urlWithId =this.props.location.pathname;
@@ -94,7 +94,8 @@ class PollDetails extends Component {
             }
         
             console.log('This particular polldetail RESULTS: ' + JSON.stringify(response.message));
-        
+             var tarr = this.state.list;
+             tarr.responses = response.message;
             this.setState({
                     list: response.message
                 });
@@ -249,13 +250,24 @@ class PollDetails extends Component {
     }
    
     render() {
-        console.log("state",this.state)
-        let responseList = this.state.list.map(function(item, index){
+        console.log("this.state.list.response",this.state.list.responses)
+        
+        console.log("this.state.list.responses[0]",this.state.list.responses[0])
+        console.log("this.state.list.responses[0].responses",this.state.list.responses[0].responses)
+        var index = this.state.list
+        let responseList =[];
+        if(1===1){
+            responseList = this.state.list.responses.map(function(item, index){
+                console.log("this.state.list._id",this.state.list._id)
+                console.log("item.response",item.response)
+                console.log("item.votes",item.votes)
             return (
                 <RadioRows  key={index} 
                 pollId={this.state.list._id} resp={item.response} votes={item.votes} />
             )
         }.bind(this)); 
+        }
+        
   
         return(<div className="container">
                     <div className="row">
