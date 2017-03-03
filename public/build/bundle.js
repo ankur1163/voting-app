@@ -122,7 +122,7 @@
 	    _react2.default.createElement(_reactRouter.Route, { path: 'login', component: _Login2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'Polldetailfull/:id', component: _PollDetails2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'waste', component: _Waste2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'mypolls', component: _Mypolls2.default, onEnter: requireAuth }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'mypolls', component: _Mypolls2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'createPoll', component: _CreatePoll2.default, onEnter: requireAuth }),
 	    _react2.default.createElement('route', { path: 'editdamnpoll/:pollid', component: _Editdamnpoll2.default })
 	  )
@@ -110329,19 +110329,19 @@
 	      var _this2 = this;
 	
 	      var username;
-	      console.log("full profile real user", localStorage.getItem("profile"));
+	
 	      var obj = localStorage.getItem("profile");
-	      console.log("parsed value realuser", JSON.parse(obj));
+	
 	      var parobj = JSON.parse(obj);
 	      username = parobj.email;
 	
-	      _ApiManager2.default.get('/api/polls/' + username, null, function (err, response) {
+	      _ApiManager2.default.get('/api/polls/mypolls/' + username, null, function (err, response) {
 	        if (err) {
-	          alert("Error: " + err);
+	          console.log("error mypolls", err);
 	          return;
 	        }
 	
-	        console.log('RESULTS: ' + JSON.stringify(response.message));
+	        console.log('RESULTS my polls: ' + JSON.stringify(response.message));
 	
 	        _this2.setState({
 	          list: response.message
@@ -110351,7 +110351,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	
+	      console.log("my polls", this.state.list);
 	      var listItems = this.state.list.map(function (poll, i) {
 	        return _react2.default.createElement(
 	          'li',

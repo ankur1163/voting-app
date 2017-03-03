@@ -32,7 +32,7 @@ router.get("/:resource", function(req, res, next){
 });
 
 ///api/polls/'+username
-router.get("/:resource/:username", function(req, res, next){
+router.get("/:resource/mypolls/:username", function(req, res, next){
     console.log('fetch specific username polls' + controllers[resourceFrom]);
     var resourceFrom = req.params.resource;
     var controller = controllers[resourceFrom];
@@ -47,17 +47,21 @@ router.get("/:resource/:username", function(req, res, next){
     }
     
     // call the correct controller specified by the http request
-    controller.findById(username, function(err, results){
+    controller.findmypolls(username, function(err, results){
         if (err){
                 res.json({ confirmation: 'fail',
                     message: err
                 });
                 return;
             }
-            console.log("results inside",results)
+            else{
+                console.log("results inside",results)
             res.json({ confirmation: 'success',
                     message: results
         });
+                
+            }
+            
     });
 
   

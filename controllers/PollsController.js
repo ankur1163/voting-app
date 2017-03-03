@@ -19,9 +19,27 @@ module.exports = {
         console.log("PollsControler : find by ID function")
         Polls.findById(id, function(err, poll){
             if (err) {
+                console.log("error in pollscontroller mypolls")
                 callback(err, null);
                 return;
             }
+            console.log("succesfull pollscontroller mypolls")
+            callback(err, poll);
+        });
+    },
+    findmypolls:function(id, callback){
+        
+        console.log("PollsControler : find by ID function")
+        console.log("author name is",id)
+        
+        var param = {"author":id}
+        Polls.find(param, function(err, poll){
+            if (err) {
+                console.log("error in pollscontroller mypolls")
+                callback(err, null);
+                return;
+            }
+            console.log("succesfull pollscontroller mypolls")
             callback(err, poll);
         });
     },

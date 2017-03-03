@@ -12,19 +12,19 @@ class Mypolls extends Component {
     }
     componentWillMount(){
          var username;
-        console.log("full profile real user",localStorage.getItem("profile"))
+        
         var obj = localStorage.getItem("profile")
-        console.log("parsed value realuser",JSON.parse(obj))
+        
         var parobj = JSON.parse(obj);
         username = parobj.email;
       
-        Api.get('/api/polls/'+username, null, (err, response) => {
+        Api.get('/api/polls/mypolls/'+username, null, (err, response) => {
 			if (err) { 
-				alert("Error: " + err); 
+				console.log("error mypolls",err); 
 				return;
 			}
 			
-			console.log('RESULTS: ' + JSON.stringify(response.message));
+			console.log('RESULTS my polls: ' + JSON.stringify(response.message));
 			
 			this.setState({
 					list: response.message
@@ -34,7 +34,7 @@ class Mypolls extends Component {
     }
     
     render() {
-       
+       console.log("my polls",this.state.list)
        	const listItems = this.state.list.map((poll, i) =>  {
 			return (
 				<li key={i}>
