@@ -250,7 +250,7 @@ class PollDetails extends Component {
    
     render() {
         console.log("state",this.state)
-        let responseList = this.state.list.responses.map(function(item, index){
+        let responseList = this.state.list.map(function(item, index){
             return (
                 <RadioRows  key={index} 
                 pollId={this.state.list._id} resp={item.response} votes={item.votes} />
