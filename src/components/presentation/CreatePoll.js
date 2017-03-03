@@ -89,7 +89,7 @@ class CreatePoll extends Component {
           console.log("final pollObject",pollObject)
         	Api.post('/api/polls', pollObject, (err, response) => {
 			if (err) { 
-				alert("Error: " + JSON.stringify(err)); 
+				console.log("Error: "); 
 				return;
 			}
 			

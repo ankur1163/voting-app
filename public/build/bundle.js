@@ -78150,7 +78150,7 @@
 	                        _react2.default.createElement(
 	                            'p',
 	                            null,
-	                            'You can share this poll with your friend. Just share this url'
+	                            'You can share this poll with your friend. Just copy  this url and send to your friends'
 	                        ),
 	                        _react2.default.createElement('br', null),
 	                        this.fullurl()
@@ -110060,7 +110060,7 @@
 	            console.log("final pollObject", pollObject);
 	            _ApiManager2.default.post('/api/polls', pollObject, function (err, response) {
 	                if (err) {
-	                    alert("Error: " + JSON.stringify(err));
+	                    console.log("Error: ");
 	                    return;
 	                }
 	
