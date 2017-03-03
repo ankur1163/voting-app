@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Api from '../../utils/ApiManager';
 import Poll from '../presentation/Poll';
 
+//final
 
 class Mypolls extends Component {
     constructor(){
