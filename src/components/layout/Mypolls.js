@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Api from '../../utils/ApiManager';
+import Poll from '../presentation/Poll';
 
 
 class Mypolls extends Component {
@@ -34,11 +35,20 @@ class Mypolls extends Component {
     
     render() {
        
+       	const listItems = this.state.list.map((poll, i) =>  {
+			return (
+				<li key={i}>
+					<Poll currentPoll={poll} /> 
+				</li>
+			)
+		});
+	
         
         //const zoneStyle = styles.zone; // needs to be inside the render func!
         
         return(<div>
                 <h2> My Polls  page is here </h2>
+                {listItems}
                 </div>);
     }
 }

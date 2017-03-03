@@ -110272,7 +110272,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -110285,6 +110285,10 @@
 	
 	var _ApiManager2 = _interopRequireDefault(_ApiManager);
 	
+	var _Poll = __webpack_require__(187);
+	
+	var _Poll2 = _interopRequireDefault(_Poll);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -110294,63 +110298,72 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var Mypolls = function (_Component) {
-	    _inherits(Mypolls, _Component);
+	  _inherits(Mypolls, _Component);
 	
-	    function Mypolls() {
-	        _classCallCheck(this, Mypolls);
+	  function Mypolls() {
+	    _classCallCheck(this, Mypolls);
 	
-	        var _this = _possibleConstructorReturn(this, (Mypolls.__proto__ || Object.getPrototypeOf(Mypolls)).call(this));
+	    var _this = _possibleConstructorReturn(this, (Mypolls.__proto__ || Object.getPrototypeOf(Mypolls)).call(this));
 	
-	        _this.state = {
-	            list: []
-	        };
-	        return _this;
+	    _this.state = {
+	      list: []
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(Mypolls, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var _this2 = this;
+	
+	      var username;
+	      console.log("full profile real user", localStorage.getItem("profile"));
+	      var obj = localStorage.getItem("profile");
+	      console.log("parsed value realuser", JSON.parse(obj));
+	      var parobj = JSON.parse(obj);
+	      username = parobj.email;
+	
+	      _ApiManager2.default.get('/api/polls/' + username, null, function (err, response) {
+	        if (err) {
+	          alert("Error: " + err);
+	          return;
+	        }
+	
+	        console.log('RESULTS: ' + JSON.stringify(response.message));
+	
+	        _this2.setState({
+	          list: response.message
+	        });
+	      });
 	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
 	
-	    _createClass(Mypolls, [{
-	        key: 'componentWillMount',
-	        value: function componentWillMount() {
-	            var _this2 = this;
+	      var listItems = this.state.list.map(function (poll, i) {
+	        return _react2.default.createElement(
+	          'li',
+	          { key: i },
+	          _react2.default.createElement(_Poll2.default, { currentPoll: poll })
+	        );
+	      });
 	
-	            var username;
-	            console.log("full profile real user", localStorage.getItem("profile"));
-	            var obj = localStorage.getItem("profile");
-	            console.log("parsed value realuser", JSON.parse(obj));
-	            var parobj = JSON.parse(obj);
-	            username = parobj.email;
+	      //const zoneStyle = styles.zone; // needs to be inside the render func!
 	
-	            _ApiManager2.default.get('/api/polls/' + username, null, function (err, response) {
-	                if (err) {
-	                    alert("Error: " + err);
-	                    return;
-	                }
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'h2',
+	          null,
+	          ' My Polls  page is here '
+	        ),
+	        listItems
+	      );
+	    }
+	  }]);
 	
-	                console.log('RESULTS: ' + JSON.stringify(response.message));
-	
-	                _this2.setState({
-	                    list: response.message
-	                });
-	            });
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	
-	            //const zoneStyle = styles.zone; // needs to be inside the render func!
-	
-	            return _react2.default.createElement(
-	                'div',
-	                null,
-	                _react2.default.createElement(
-	                    'h2',
-	                    null,
-	                    ' My Polls  page is here '
-	                )
-	            );
-	        }
-	    }]);
-	
-	    return Mypolls;
+	  return Mypolls;
 	}(_react.Component);
 	
 	exports.default = Mypolls;
